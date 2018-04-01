@@ -1,0 +1,41 @@
+name: blender
+version: '${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}'
+summary: Complete 3D content creation suite
+description: |
+  Blender is an integrated 3D modelling, animation, rendering and
+  post-production application.
+
+icon: ${CMAKE_SOURCE_DIR}/release/freedesktop/icons/scalable/apps/blender.svg
+confinement: strict
+grade: stable
+
+apps:
+  blender:
+    command: desktop-launch $SNAP/usr/blender
+    desktop: usr/blender.desktop
+    plugs:
+      - desktop
+      - desktop-legacy
+      - home
+      - mount-observe
+      - network
+      - network-bind
+      - opengl
+      - optical-drive
+      - pulseaudio
+      - removable-media
+      - screen-inhibit-control
+      - unity7
+      - wayland
+      - x11
+
+parts:
+  blender:
+    source: ${CMAKE_SOURCE_DIR}
+    plugin: cmake
+    configflags:
+      - -DCMAKE_INSTALL_PREFIX=/usr
+    after:
+      - desktop-glib-only
+    prepare: |
+      ${CMAKE_SOURCE_DIR}/build_files/build_environment/install_deps.sh --no-confirm
